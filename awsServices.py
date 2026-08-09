@@ -1,30 +1,29 @@
-import boto3
-import os
+"""Local stub — original repo uploaded frames/PDFs to S3; we keep everything on disk."""
+
 from collections import defaultdict
 
-s3 = boto3.resource('s3')
 
-bucket = s3.Bucket(name="ytsheetmusic")
+class _LocalBucket:
+    name = "local"
+
+
+bucket = _LocalBucket()
+
 
 def uploadFile(filename, bucket, pdf=False):
-    if pdf:    
-        bucket.upload_file(Filename=filename,  Key=filename, ExtraArgs={'ContentType': "application/pdf"})
-        return
-    bucket.upload_file(Filename=filename,  Key=filename)
+    print(f"[local] skip upload: {filename}")
+
 
 def downloadFile(filename, destination, bucket):
-    if not os.path.exists(os.path.dirname(filename)):
-        os.makedirs(os.path.dirname(filename), mode=0o777)
-    bucket.download_file(Key=filename, Filename=destination)
-    
-def deleteFile(filename, bucket_name='ytsheetmusic'):
-    s3.meta.client.delete_object(Bucket=bucket_name, Key=filename)
+    raise FileNotFoundError(
+        f"Local mode: cannot download {filename} from S3. "
+        "Ensure frames already exist on disk."
+    )
 
-def getFiles(bucket, prefix=''):
-    items = defaultdict(list)
-    for item in bucket.objects.filter(Prefix=prefix):
-        name = item.key
-        if name.startswith(prefix):
-            folderpath, delimiter, filename = name.rpartition('/')
-            items[folderpath].append(filename)
-    return dict(items)
+
+def deleteFile(filename, bucket_name="local"):
+    print(f"[local] skip delete: {filename}")
+
+
+def getFiles(bucket, prefix=""):
+    return dict(defaultdict(list))

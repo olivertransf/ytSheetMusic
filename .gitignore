@@ -5,3 +5,10 @@
 *.webm
 *.exe
 *.sh
+
+.venv/
+__pycache__/
+*.pyc
+
+Sheet Music/
+WhenYouWishUponAStar/
