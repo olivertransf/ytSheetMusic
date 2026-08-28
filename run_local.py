@@ -29,7 +29,7 @@ def download_video(url: str, file_name: str) -> str:
 
 
 def default_output_dir() -> str:
-    return os.path.join(os.path.expanduser("~/Downloads"), "Sheet Music")
+    return os.path.expanduser("~/Downloads")
 
 
 def run(
@@ -76,7 +76,7 @@ def main():
     p.add_argument(
         "--out-dir",
         default=None,
-        help='Output directory for the final PDF (default: "~/Downloads/Sheet Music")',
+        help='Output directory for the final PDF (default: "~/Downloads")',
     )
     args = p.parse_args()
 

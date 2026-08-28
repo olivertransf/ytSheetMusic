@@ -29,7 +29,7 @@ python run_local.py "https://www.youtube.com/watch?v=VIDEO_ID" \
   --hands
 ```
 
-PDF is written to `~/Downloads/Sheet Music/<Piece Name>.pdf` by default.
+PDF is written to `~/Downloads/<Piece Name>.pdf` by default.
 
 ### Options
 
@@ -38,7 +38,7 @@ PDF is written to `~/Downloads/Sheet Music/<Piece Name>.pdf` by default.
 | `-n` / `--name` | Output base name (video id if omitted) |
 | `--hands` | Crop hands / non-score UI from frames |
 | `--threshold` | Frame similarity cutoff (default `0.9`; lower keeps more frames) |
-| `--out-dir` | Output directory for the final PDF (default `~/Downloads/Sheet Music`) |
+| `--out-dir` | Output directory for the final PDF (default `~/Downloads`) |
 
 Example:
 
