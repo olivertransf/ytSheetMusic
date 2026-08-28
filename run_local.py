@@ -5,6 +5,7 @@ import argparse
 import os
 import shutil
 import sys
+from typing import Optional
 
 from screenshot import Screenie
 from combine import Join
@@ -27,9 +28,19 @@ def download_video(url: str, file_name: str) -> str:
     return out
 
 
-def run(url: str, file_name: str, hands: bool = False, threshold: float = 0.9):
+def default_output_dir() -> str:
+    return os.path.join(os.path.expanduser("~/Downloads"), "Sheet Music")
+
+
+def run(
+    url: str,
+    file_name: str,
+    hands: bool = False,
+    threshold: float = 0.9,
+    out_dir: Optional[str] = None,
+):
     folder_name = "".join(file_name.split(" "))
-    out_dir = "Sheet Music"
+    out_dir = out_dir or default_output_dir()
     os.makedirs(out_dir, exist_ok=True)
     pdf_path = os.path.join(out_dir, f"{file_name}.pdf")
 
@@ -62,6 +73,11 @@ def main():
     p.add_argument("-n", "--name", default=None, help="Output base name")
     p.add_argument("--hands", action="store_true", help="Crop out hands / non-score UI")
     p.add_argument("--threshold", type=float, default=0.9, help="Frame similarity threshold")
+    p.add_argument(
+        "--out-dir",
+        default=None,
+        help='Output directory for the final PDF (default: "~/Downloads/Sheet Music")',
+    )
     args = p.parse_args()
 
     name = args.name
@@ -70,7 +86,7 @@ def main():
         name = name.split("&")[0] or "sheetmusic"
 
     try:
-        run(args.url, name, hands=args.hands, threshold=args.threshold)
+        run(args.url, name, hands=args.hands, threshold=args.threshold, out_dir=args.out_dir)
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
